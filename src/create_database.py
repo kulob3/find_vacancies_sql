@@ -1,8 +1,8 @@
 import psycopg2
 
-def create_db(db_name, user, password, host='localhost', port='5432'):
-    '''Создание баз�� данных, если она не существует'''
-    conn = psycopg2.connect(dbname='postgres', user=user, password=password, host=host, port=port)
+def create_db(db_name, **config) -> None:
+    '''Создание базы данных, если она не существует'''
+    conn = psycopg2.connect(dbname='postgres', **config)
     conn.autocommit = True
     cur = conn.cursor()
     try:
@@ -14,7 +14,7 @@ def create_db(db_name, user, password, host='localhost', port='5432'):
     cur.close()
     conn.close()
 
-    conn = psycopg2.connect(dbname=db_name, user=user, password=password, host=host, port=port)
+    conn = psycopg2.connect(dbname=db_name, **config)
     with conn.cursor() as cur:
         cur.execute("""
             CREATE TABLE employers (
@@ -41,10 +41,9 @@ def create_db(db_name, user, password, host='localhost', port='5432'):
     conn.close()
 
 
-def save_data_to_db(data: list[dict], database_name: str, user, password, host='localhost',
-                    port='5432') -> None:
+def save_data_to_db(data: list[dict], database_name: str, **config) -> None:
     """ Сохранение данных в базу данных """
-    conn = psycopg2.connect(dbname=database_name, user=user, password=password, host=host, port=port)
+    conn = psycopg2.connect(dbname=database_name, **config)
 
     with conn.cursor() as cur:
         for i in data:

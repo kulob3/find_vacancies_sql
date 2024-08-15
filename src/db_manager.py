@@ -4,10 +4,12 @@ from config import config
 
 
 class DBManager:
-    def __init__(self, database_name='vacancies'):
+    """Класс для работы с базой данных"""
+    def __init__(self, database_name):
         self.conn = psycopg2.connect(dbname=database_name, **config())
 
     def get_companies_and_vacancies_count(self):
+        """Функция для получения списка работодателей и количества вакансий у них"""
         companies = []
         with self.conn.cursor() as cur:
             cur.execute("""
@@ -26,13 +28,14 @@ class DBManager:
         return companies
 
     def get_all_vacancies(self):
+        """Функция для получения всех вакансий"""
         vacancies = []
         with self.conn.cursor() as cur:
             cur.execute("""
                 SELECT e.employer as company_name, v.name as vacancy_name, v.salary, v.currency, v.experience, v.employment, v.area, v.published_at, v.alternate_url
                 FROM vacancies v
                 JOIN employers e ON v.employer_id = e.employer_id
-                LIMIT 100
+                LIMIT 200
             """)
             for row in cur.fetchall():
                 vacancy = {
@@ -50,7 +53,7 @@ class DBManager:
         return vacancies
 
     def get_avg_salary(self):
-
+        """Функция для получения средней зарплаты"""
         with self.conn.cursor() as cur:
             cur.execute("""
                 SELECT AVG(CAST(salary AS INTEGER))
@@ -60,6 +63,7 @@ class DBManager:
             return cur.fetchone()[0]
 
     def get_vacancies_with_higher_salary(self):
+        """Функция для получения вакансий с зарплатой выше среднего уровня"""
         avg_salary = self.get_avg_salary()
         vacancies = []
         with self.conn.cursor() as cur:
@@ -85,6 +89,7 @@ class DBManager:
         return vacancies
 
     def get_vacancies_with_keyword(self, keyword):
+        """Функция для поиска вакансий по ключевому слову"""
         vacancies = []
         with self.conn.cursor() as cur:
             cur.execute(sql.SQL("""
@@ -108,16 +113,7 @@ class DBManager:
                 vacancies.append(vacancy)
         return vacancies
 
-    def close(self):
-        self.conn.close()
 
-# db_manager = DBManager()
-# print(db_manager.get_companies_and_vacancies_count())
-# print(db_manager.get_all_vacancies())
-# print(db_manager.get_avg_salary())
-# print(db_manager.get_vacancies_with_higher_salary())
-# print(db_manager.get_vacancies_with_keyword('python'))
-# db_manager.close()
 
 
 

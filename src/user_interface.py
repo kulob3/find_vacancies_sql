@@ -1,3 +1,4 @@
+from config import config
 from src.get_vacancies import HHruAPI
 from src.create_database import create_db, save_data_to_db
 from src.utils import vacansies_sort
@@ -6,15 +7,13 @@ def create_request_phrase():
     '''Функция для формирования и получения поискового запроса.'''
     hh = HHruAPI()  # Создаем объект класса HHruAPI
     hh.connect()  # Устанавливаем соединение с HH.ru
-    vacancies = hh.load_vacancies(['1740', '592442', '1455', '15478', '9459850'])
+    vacancies = hh.load_vacancies(['1740', '592442', '1455', '15478', '9459850', '3127', '3086759', '4592004', '567049', '10814600', '4219'])
     return vacancies
 
 def made_sql(vacancies):
     '''Функция для создания базы данных'''
-    # delete_db('vacancies', 'postgres', 'lenovo201')  # удаляем базу данных, если она существует
-    create_db('vacancies', 'postgres', 'lenovo201')  # создаем базу данных
-    save_data_to_db(vacancies, 'vacancies', 'postgres', 'lenovo201')  # записываем данные в базу данных
-
+    create_db('vacancies', **config())  # создаем базу данных
+    save_data_to_db(vacancies, 'vacancies', **config())  # записываем данные в базу данных
 
 
 def option_sort(db_manager):

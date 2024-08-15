@@ -2,13 +2,11 @@ import os
 from configparser import ConfigParser
 
 def config(filename='/home/alex/PycharmProjects/pythonProjectDB/database.ini', section='postgresql'):
-    # Verify the path to the database.ini file
+    """Функция для чтения файла конфигурации и возврата словаря с параметрами"""
     if not os.path.isfile(filename):
         raise Exception(f'File {filename} not found')
 
-    # create a parser
     parser = ConfigParser()
-    # read config file
     parser.read(filename)
     db = {}
     if parser.has_section(section):
