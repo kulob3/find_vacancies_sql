@@ -1,4 +1,3 @@
-from src.utils import get_exchange_rate
 from src.user_interface import create_request_phrase, option_sort, made_sql
 from src.db_manager import DBManager
 
