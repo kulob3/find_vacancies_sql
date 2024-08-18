@@ -1,11 +1,11 @@
 import os
 from configparser import ConfigParser
 
-def config(filename='/home/alex/PycharmProjects/pythonProjectDB/database.ini', section='postgresql'):
+
+def config(filename = os.path.abspath('database.ini'), section='postgresql'):
     """Функция для чтения файла конфигурации и возврата словаря с параметрами"""
     if not os.path.isfile(filename):
         raise Exception(f'File {filename} not found')
-
     parser = ConfigParser()
     parser.read(filename)
     db = {}
@@ -16,3 +16,6 @@ def config(filename='/home/alex/PycharmProjects/pythonProjectDB/database.ini', s
     else:
         raise Exception(f'Section {section} not found in the {filename} file')
     return db
+
+
+
