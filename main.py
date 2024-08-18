@@ -1,10 +1,14 @@
 from src.user_interface import create_request_phrase, option_sort, made_sql
 from src.db_manager import DBManager
+import sys
 
 def user_interaction():
     """Функция для взаимодействия с пользователем"""
     print('Привет! С помощью этой программы ты можешь найти работу.')
     vacancies = create_request_phrase()
+    if vacancies is None:
+        print("Не удалось получить вакансии. Программа завершена.")
+        sys.exit(1)
     made_sql(vacancies)
     db_manager = DBManager('vacancies')
     option_sort(db_manager)
