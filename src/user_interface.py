@@ -6,9 +6,8 @@ from src.utils import vacansies_sort
 def create_request_phrase():
     '''Функция для формирования и получения поискового запроса.'''
     hh = HHruAPI()  # Создаем объект класса HHruAPI
-    hh.connect()  # Устанавливаем соединение с HH.ru
     vacancies = hh.load_vacancies(['1740', '592442', '1455', '15478', '9459850', '3127', '3086759', '4592004', '567049', '10814600', '4219'])
-    return vacancies
+    return vacancies if vacancies else None
 
 def made_sql(vacancies):
     '''Функция для создания базы данных'''
